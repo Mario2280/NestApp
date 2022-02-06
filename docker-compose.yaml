@@ -1,0 +1,39 @@
+version: '3.8'
+
+volumes:
+  database:
+  logs:
+
+services:
+ notes:
+  container_name: App
+  build: .
+  ports:
+   - ${PORT}:${PORT}
+  environment:
+    SERVER_PORT: ${PORT}
+  restart: on-failure
+  depends_on:
+    - postgres
+  volumes:
+   - ./:/app/logs
+   - ./:/app
+  networks:
+      - network
+ postgres:
+    container_name: q4
+    build: ./database
+    ports:
+    - ${POSTGRES_PORT}:${POSTGRES_PORT}
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+    volumes:
+    - database:/var/lib/postgresql/data
+    networks:
+      - network
+networks:
+  network:
+    driver: bridge

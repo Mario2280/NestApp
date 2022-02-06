@@ -1,0 +1,13 @@
+.github
+doc
+node_modules
+.git
+logs
+build
+database
+doc
+.eslintrc.json
+.eslintignore
+.gitignore
+.prettierrc
+README.md
