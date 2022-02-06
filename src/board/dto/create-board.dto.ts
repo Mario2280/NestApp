@@ -1,10 +1,8 @@
-import { IsNotEmpty } from "class-validator";
+import { IsNotEmpty } from 'class-validator';
 
 export class CreateBoardDto {
-    
-    @IsNotEmpty()
-    readonly title: string;
+  @IsNotEmpty()
+  readonly title: string;
 
-    readonly columns: object[];
-
+  readonly columns: object[];
 }
