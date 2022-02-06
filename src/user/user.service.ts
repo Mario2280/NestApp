@@ -8,13 +8,14 @@ import bcrypt from 'bcryptjs';
 
 function toResponse(user: User | User[] | undefined) {
   if (user instanceof Array) {
-    let withoutPassword: Array<{ login: string, name: string, id: string }> = [];
-    user.forEach(e => {
+    const withoutPassword: Array<{ login: string; name: string; id: string }> =
+      [];
+    user.forEach((e) => {
       withoutPassword.push({
         id: e.id,
         login: e.login,
-        name: e.name
-      })
+        name: e.name,
+      });
     });
     return withoutPassword;
   }
@@ -22,25 +23,32 @@ function toResponse(user: User | User[] | undefined) {
     return {
       id: user.id,
       login: user.login,
-      name: user.name
-    }
+      name: user.name,
+    };
 }
 
 @Injectable()
 export class UserService {
-
-  constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) { }
+  constructor(
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
+  ) {}
 
   async create(createUserDto: CreateUserDto) {
-    const candidate = await this.userRepository.findOne({ where: { login: createUserDto.login } });
-    if (candidate) throw new HttpException("User already exists", HttpStatus.CONFLICT);
+    const candidate = await this.userRepository.findOne({
+      where: { login: createUserDto.login },
+    });
+    if (candidate)
+      throw new HttpException('User already exists', HttpStatus.CONFLICT);
     createUserDto.password = bcrypt.hashSync(createUserDto.password, 7);
-    const idObj = await this.userRepository.createQueryBuilder("user")
+    const idObj = await this.userRepository
+      .createQueryBuilder('user')
       .insert()
       .into(User)
       .values(createUserDto)
       .execute();
-    const result = await this.userRepository.findOne({ where: { id: idObj.raw[0]?.id } });
+    const result = await this.userRepository.findOne({
+      where: { id: idObj.raw[0]?.id },
+    });
     return toResponse(result);
   }
 
@@ -51,13 +59,13 @@ export class UserService {
 
   async findOne(id: string) {
     const result = await this.userRepository.findOne(id);
-    if (!result) throw new HttpException("Nani", HttpStatus.NOT_FOUND);
+    if (!result) throw new HttpException('Nani', HttpStatus.NOT_FOUND);
     return toResponse(result);
   }
 
   async update(id: string, updateUserDto: UpdateUserDto) {
     const candidate = await this.userRepository.findOne(id);
-    if (!candidate) throw new HttpException("Nani", HttpStatus.NOT_FOUND);
+    if (!candidate) throw new HttpException('Nani', HttpStatus.NOT_FOUND);
     if (updateUserDto.password) {
       updateUserDto.password = bcrypt.hashSync(updateUserDto.password, 7);
     }
@@ -71,7 +79,7 @@ export class UserService {
       .createQueryBuilder('user')
       .delete()
       .from(User)
-      .where("id = :id", { id })
+      .where('id = :id', { id })
       .execute();
     return result;
   }

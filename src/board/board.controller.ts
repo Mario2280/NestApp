@@ -1,4 +1,16 @@
-import { Controller, Get, Post, Body, Param, Delete, ParseUUIDPipe, Header, Put, HttpCode, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  ParseUUIDPipe,
+  Header,
+  Put,
+  HttpCode,
+  UseGuards,
+} from '@nestjs/common';
 import { BoardService } from './board.service';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
@@ -7,7 +19,7 @@ import { JwtAuthGuard } from '../auth/jwt.auth-guard';
 
 @Controller('boards')
 export class BoardController {
-  constructor(private readonly boardService: BoardService) { }
+  constructor(private readonly boardService: BoardService) {}
   @UseGuards(JwtAuthGuard)
   @Post()
   @Header('Content-Type', 'application/json')
@@ -28,7 +40,10 @@ export class BoardController {
   @UseGuards(JwtAuthGuard)
   @Put(':id')
   @Header('Content-Type', 'application/json')
-  async update(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string, @Body(new ValidationPipe()) updateBoardDto: UpdateBoardDto) {
+  async update(
+    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
+    @Body(new ValidationPipe()) updateBoardDto: UpdateBoardDto,
+  ) {
     return await this.boardService.update(id, updateBoardDto);
   }
   @UseGuards(JwtAuthGuard)

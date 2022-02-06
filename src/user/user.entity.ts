@@ -4,20 +4,18 @@ import Task from '../task/task.entity';
 
 @Entity()
 export default class User {
-    @PrimaryGeneratedColumn('uuid')
-    id: string;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-    @Column()
-    name: string;
+  @Column()
+  name: string;
 
-    @Column({ unique: true })
-    login: string;
+  @Column({ unique: true })
+  login: string;
 
-    @Column()
-    password: string;
+  @Column()
+  password: string;
 
-    @OneToMany(() => Task, task => task.user, { cascade: true })
-    tasks: Task[];
-
+  @OneToMany(() => Task, (task) => task.user, { cascade: true })
+  tasks: Task[];
 }
-

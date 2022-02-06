@@ -3,11 +3,11 @@ import { AuthService } from './auth.service';
 
 @Controller('login')
 export class AuthController {
-  constructor(private readonly authService: AuthService) { }
+  constructor(private readonly authService: AuthService) {}
 
   @Post()
   @Header('Content-Type', 'application/json')
-  async login(@Body() userDto: { login: string, password: string }) {
+  async login(@Body() userDto: { login: string; password: string }) {
     const result = await this.authService.login(userDto);
     return result;
   }
