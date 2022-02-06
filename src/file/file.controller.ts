@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-useless-return */
 /* eslint-disable class-methods-use-this */
 /* eslint-disable no-undef */
@@ -5,11 +6,13 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-empty-function */
 /* eslint-disable no-useless-constructor */
-import { Controller, Param, Post, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import {Response} from 'express';
+import { Controller, Get, NotFoundException, Param, Post, Res, ServiceUnavailableException, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
-import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { FileService } from './file.service';
+
 
 @Controller('file')
 export class FileController {
@@ -30,7 +33,25 @@ export class FileController {
     )
     uploadAvatar(@Param('filename') filename:any, @UploadedFile() file:any) {
       return 'Uploaded';
-    }     
+    }
+    
+    
+    @Get('/:filename')
+  async downloadMedia(@Param('mediaId') mediaId: string, @Res() res: Response) {
+    let storageFile: StorageFile;
+    try {
+      storageFile = await this.storageService.get('media/' + mediaId);
+    } catch (e) {
+      if ((<Error>e).message.toString().includes('No such object')) {
+        throw new NotFoundException('image not found');
+      } else {
+        throw new ServiceUnavailableException('internal error');
+      }
+    }
+    res.setHeader('Content-Type', storageFile.contentType);
+    res.setHeader('Cache-Control', 'max-age=60d');
+    res.end(storageFile.buffer);
+  }
 }
 
 
