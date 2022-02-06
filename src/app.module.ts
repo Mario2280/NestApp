@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TaskModule } from './task/task.module';
 import { UserModule } from './user/user.module';
 import { BoardModule } from './board/board.module';
+import { AuthModule } from './auth/auth.module';
 
 
 
@@ -15,6 +16,6 @@ import { BoardModule } from './board/board.module';
     imports: [ConfigModule.forRoot({
         envFilePath: '.env'
     })
-        , TypeOrmModule.forRoot(), TaskModule, UserModule, BoardModule]
+        , TypeOrmModule.forRoot(), TaskModule, UserModule, BoardModule, AuthModule]
 })
 export class AppModule { }

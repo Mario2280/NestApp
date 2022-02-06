@@ -25,12 +25,13 @@ let BoardService = class BoardService {
         this.boardRepository = boardRepository;
     }
     async create(createBoardDto) {
-        const result = await this.boardRepository.createQueryBuilder("board")
+        const idObj = await this.boardRepository.createQueryBuilder("board")
             .insert()
             .into(board_entity_1.default)
             .values(createBoardDto)
             .execute();
-        return result.raw[0]?.id;
+        const result = await this.boardRepository.findOne({ where: { id: idObj.raw[0]?.id } });
+        return result;
     }
     async findAll() {
         const result = await this.boardRepository.find();
@@ -46,12 +47,8 @@ let BoardService = class BoardService {
         const candidate = await this.boardRepository.findOne(id);
         if (!candidate)
             throw new common_1.HttpException("Nani", common_1.HttpStatus.NOT_FOUND);
-        await this.boardRepository.update(id, updateBoardDto);
-        const sql = this.boardRepository.createQueryBuilder("board")
-            .update(board_entity_1.default)
-            .set(updateBoardDto)
-            .where('id = :id', { id }).getSql();
-        return sql;
+        await this.boardRepository.update(id, { ...updateBoardDto });
+        return { message: `Updated` };
     }
     async remove(id) {
         await this.boardRepository
@@ -60,11 +57,7 @@ let BoardService = class BoardService {
             .from(board_entity_1.default)
             .where("id = :id", { id })
             .execute();
-        return this.boardRepository
-            .createQueryBuilder('board')
-            .delete()
-            .from(board_entity_1.default)
-            .where("id = :id", { id }).getSql();
+        return { message: `Deleted` };
     }
 };
 BoardService = __decorate([

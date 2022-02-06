@@ -17,8 +17,4 @@ __decorate([
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
 ], CreateBoardDto.prototype, "title", void 0);
-__decorate([
-    (0, class_validator_1.IsNotEmpty)(),
-    __metadata("design:type", Array)
-], CreateBoardDto.prototype, "tasks", void 0);
 exports.CreateBoardDto = CreateBoardDto;

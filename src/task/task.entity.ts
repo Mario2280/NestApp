@@ -35,11 +35,11 @@ export default class Task {
     // column: ColumnEntity;
 
     
-    @Column()
+    @Column({nullable:true})
     boardId: string;
 
-    @ManyToOne(() => Board, board => board.tasks, { onDelete: 'CASCADE' })
-    @JoinColumn({name: 'boardId'})
+    @ManyToOne(() => Board, board => board.tasks, { onDelete: 'CASCADE', nullable:true })
+    @JoinColumn({name: 'boardId', })
     board:Board
 
 }

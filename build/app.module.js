@@ -13,6 +13,7 @@ const typeorm_1 = require("@nestjs/typeorm");
 const task_module_1 = require("./task/task.module");
 const user_module_1 = require("./user/user.module");
 const board_module_1 = require("./board/board.module");
+const auth_module_1 = require("./auth/auth.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -22,7 +23,7 @@ AppModule = __decorate([
         imports: [config_1.ConfigModule.forRoot({
                 envFilePath: '.env'
             }),
-            typeorm_1.TypeOrmModule.forRoot(), task_module_1.TaskModule, user_module_1.UserModule, board_module_1.BoardModule]
+            typeorm_1.TypeOrmModule.forRoot(), task_module_1.TaskModule, user_module_1.UserModule, board_module_1.BoardModule, auth_module_1.AuthModule]
     })
 ], AppModule);
 exports.AppModule = AppModule;

@@ -13,12 +13,7 @@ export default class User {
     @Column({ unique: true })
     login: string;
 
-    @Column({
-        transformer: {
-            to: (value: string) => value,
-            from: () => null
-        }
-    })
+    @Column()
     password: string;
 
     @OneToMany(() => Task, task => task.user, { cascade: true })

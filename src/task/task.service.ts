@@ -15,12 +15,21 @@ export class TaskService {
               @InjectRepository(User) private readonly userRepository: Repository<User>) { }
 
   async create(createTaskDto: CreateTaskDto) {
-    const result = await this.taskRepository.createQueryBuilder("task")
+    if (createTaskDto.boardId) {
+      const candidate = await this.boardRepository.findOne({where:{id: createTaskDto.boardId}});
+      if(!candidate) throw new HttpException("Nani boardId", HttpStatus.NOT_FOUND);
+    }
+    if (createTaskDto.userId) {
+      const candidate = await this.userRepository.findOne({where:{id: createTaskDto.userId}});
+      if(!candidate) throw new HttpException("Nani userId", HttpStatus.NOT_FOUND);
+    }
+    const idObj = await this.taskRepository.createQueryBuilder("task")
       .insert()
       .into(Task)
       .values(createTaskDto)
       .execute();
-    return result.raw[0]?.id;
+    const result = await this.taskRepository.findOne({where:{id: idObj.raw[0]?.id}})
+    return result;
   }
 
   async findAll() {
@@ -45,7 +54,7 @@ export class TaskService {
       const candidate = await this.userRepository.findOne({where:{id: updateTaskDto.userId}});
       if(!candidate) throw new HttpException("Nani userId", HttpStatus.NOT_FOUND);
     }
-    await this.taskRepository.update(id, updateTaskDto);
+    await this.taskRepository.update(id, {...updateTaskDto});
     const sql = this.taskRepository.createQueryBuilder("task")
       .update(Task)
       .set(updateTaskDto)

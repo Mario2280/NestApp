@@ -49,12 +49,12 @@ __decorate([
     __metadata("design:type", String)
 ], Task.prototype, "columnId", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
+    (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], Task.prototype, "boardId", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => board_entity_1.default, board => board.tasks, { onDelete: 'CASCADE' }),
-    (0, typeorm_1.JoinColumn)({ name: 'boardId' }),
+    (0, typeorm_1.ManyToOne)(() => board_entity_1.default, board => board.tasks, { onDelete: 'CASCADE', nullable: true }),
+    (0, typeorm_1.JoinColumn)({ name: 'boardId', }),
     __metadata("design:type", board_entity_1.default)
 ], Task.prototype, "board", void 0);
 Task = __decorate([

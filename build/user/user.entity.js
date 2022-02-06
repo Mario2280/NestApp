@@ -30,12 +30,7 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "login", void 0);
 __decorate([
-    (0, typeorm_1.Column)({
-        transformer: {
-            to: (value) => value,
-            from: () => null
-        }
-    }),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
 __decorate([

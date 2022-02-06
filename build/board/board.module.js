@@ -15,13 +15,14 @@ const board_service_1 = require("./board.service");
 const board_controller_1 = require("./board.controller");
 const typeorm_1 = require("@nestjs/typeorm");
 const board_entity_1 = __importDefault(require("./board.entity"));
+const auth_module_1 = require("../auth/auth.module");
 let BoardModule = class BoardModule {
 };
 BoardModule = __decorate([
     (0, common_1.Module)({
         controllers: [board_controller_1.BoardController],
         providers: [board_service_1.BoardService],
-        imports: [typeorm_1.TypeOrmModule.forFeature([board_entity_1.default])]
+        imports: [typeorm_1.TypeOrmModule.forFeature([board_entity_1.default]), auth_module_1.AuthModule]
     })
 ], BoardModule);
 exports.BoardModule = BoardModule;

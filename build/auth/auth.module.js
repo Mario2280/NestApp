@@ -9,20 +9,28 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserModule = void 0;
+exports.AuthModule = void 0;
 const common_1 = require("@nestjs/common");
-const user_service_1 = require("./user.service");
-const user_controller_1 = require("./user.controller");
+const auth_service_1 = require("./auth.service");
+const auth_controller_1 = require("./auth.controller");
 const typeorm_1 = require("@nestjs/typeorm");
-const user_entity_1 = __importDefault(require("./user.entity"));
-const auth_module_1 = require("../auth/auth.module");
-let UserModule = class UserModule {
+const user_entity_1 = __importDefault(require("../user/user.entity"));
+const jwt_1 = require("@nestjs/jwt");
+const dotenv_1 = require("dotenv");
+(0, dotenv_1.config)();
+let AuthModule = class AuthModule {
 };
-UserModule = __decorate([
+AuthModule = __decorate([
     (0, common_1.Module)({
-        controllers: [user_controller_1.UserController],
-        providers: [user_service_1.UserService],
-        imports: [typeorm_1.TypeOrmModule.forFeature([user_entity_1.default]), auth_module_1.AuthModule]
+        controllers: [auth_controller_1.AuthController],
+        providers: [auth_service_1.AuthService],
+        imports: [typeorm_1.TypeOrmModule.forFeature([user_entity_1.default]), jwt_1.JwtModule.register({
+                secret: process.env.JWT_SECRET_KEY || 'Secret',
+                signOptions: {
+                    expiresIn: '24h'
+                }
+            })],
+        exports: [auth_service_1.AuthService, jwt_1.JwtModule]
     })
-], UserModule);
-exports.UserModule = UserModule;
+], AuthModule);
+exports.AuthModule = AuthModule;

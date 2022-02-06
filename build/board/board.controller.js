@@ -17,7 +17,8 @@ const common_1 = require("@nestjs/common");
 const board_service_1 = require("./board.service");
 const create_board_dto_1 = require("./dto/create-board.dto");
 const update_board_dto_1 = require("./dto/update-board.dto");
-const validation_pipe_1 = require("./dto/validation.pipe");
+const validation_pipe_1 = require("../validation.pipe");
+const jwt_auth_guard_1 = require("../auth/jwt.auth-guard");
 let BoardController = class BoardController {
     constructor(boardService) {
         this.boardService = boardService;
@@ -25,20 +26,21 @@ let BoardController = class BoardController {
     async create(createBoardDto) {
         return await this.boardService.create(createBoardDto);
     }
-    findAll() {
-        return this.boardService.findAll();
+    async findAll() {
+        return await this.boardService.findAll();
     }
-    findOne(id) {
-        return this.boardService.findOne(id);
+    async findOne(id) {
+        return await this.boardService.findOne(id);
     }
-    update(id, updateBoardDto) {
-        return this.boardService.update(id, updateBoardDto);
+    async update(id, updateBoardDto) {
+        return await this.boardService.update(id, updateBoardDto);
     }
-    remove(id) {
-        return this.boardService.remove(id);
+    async remove(id) {
+        return await this.boardService.remove(id);
     }
 };
 __decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Post)(),
     (0, common_1.Header)('Content-Type', 'application/json'),
     __param(0, (0, common_1.Body)(new validation_pipe_1.ValidationPipe())),
@@ -47,33 +49,38 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], BoardController.prototype, "create", null);
 __decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Get)(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], BoardController.prototype, "findAll", null);
 __decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Get)(':id'),
     (0, common_1.Header)('Content-Type', 'application/json'),
     __param(0, (0, common_1.Param)('id', new common_1.ParseUUIDPipe({ version: '4' }))),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], BoardController.prototype, "findOne", null);
 __decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Put)(':id'),
+    (0, common_1.Header)('Content-Type', 'application/json'),
     __param(0, (0, common_1.Param)('id', new common_1.ParseUUIDPipe({ version: '4' }))),
-    __param(1, (0, common_1.Body)()),
+    __param(1, (0, common_1.Body)(new validation_pipe_1.ValidationPipe())),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, update_board_dto_1.UpdateBoardDto]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], BoardController.prototype, "update", null);
 __decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
     (0, common_1.Delete)(':id'),
     __param(0, (0, common_1.Param)('id', new common_1.ParseUUIDPipe({ version: '4' }))),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], BoardController.prototype, "remove", null);
 BoardController = __decorate([
     (0, common_1.Controller)('boards'),

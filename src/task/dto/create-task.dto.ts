@@ -1,5 +1,7 @@
 import { IsNotEmpty } from "class-validator";
 
+
+
 export class CreateTaskDto {
 
     @IsNotEmpty()
@@ -15,7 +17,7 @@ export class CreateTaskDto {
 
     readonly columnId: string;
 
-    @IsNotEmpty()
+    
     readonly boardId: string;
 
 
