@@ -175,7 +175,7 @@ describe('Users suite', () => {
           request
             .post(routes.tasks.create(boardId))
             .send({
-              title: `Task #${idx + 1}`, 
+              title: `Task #${idx + 1}`,
               order: idx + 1,
               description: 'Lorem ipsum',
               userId,
