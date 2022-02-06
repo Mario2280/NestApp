@@ -1,7 +1,7 @@
 /* eslint-disable import/no-cycle */
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import Task from '../task/task.entity';
-//import ColumnEntity from './Column';
+// import ColumnEntity from './Column';
 
 @Entity()
 export default class Board {

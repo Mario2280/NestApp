@@ -1,9 +1,13 @@
+/* eslint-disable no-empty-function */
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-useless-constructor */
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import User from '../user/user.entity';
 import bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
+import User from '../user/user.entity';
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -19,7 +23,6 @@ export class AuthService {
       if (!candidate) {
         return `User not found`;
       }
-      console.log(candidate);
       const validePassword = bcrypt.compareSync(
         userDto.password,
         candidate.password,

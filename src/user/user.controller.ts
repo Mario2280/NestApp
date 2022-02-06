@@ -1,3 +1,7 @@
+/* eslint-disable no-return-await */
+/* eslint-disable no-empty-function */
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-useless-constructor */
 import {
   Controller,
   Get,
@@ -20,6 +24,7 @@ import { JwtAuthGuard } from '../auth/jwt.auth-guard';
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
+
   @UseGuards(JwtAuthGuard)
   @Post()
   @HttpCode(201)
@@ -34,11 +39,13 @@ export class UserController {
   async findAll() {
     return await this.userService.findAll();
   }
+
   @UseGuards(JwtAuthGuard)
   @Get(':id')
   async findOne(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string) {
     return await this.userService.findOne(id);
   }
+
   @UseGuards(JwtAuthGuard)
   @Put(':id')
   @Header('Content-Type', 'application/json')
@@ -48,6 +55,7 @@ export class UserController {
   ) {
     return await this.userService.update(id, updateUserDto);
   }
+
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async remove(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string) {

@@ -1,10 +1,14 @@
+/* eslint-disable no-empty-function */
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-useless-constructor */
+/* eslint-disable consistent-return */
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import bcrypt from 'bcryptjs';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import User from './user.entity';
-import bcrypt from 'bcryptjs';
 
 function toResponse(user: User | User[] | undefined) {
   if (user instanceof Array) {
@@ -39,6 +43,7 @@ export class UserService {
     });
     if (candidate)
       throw new HttpException('User already exists', HttpStatus.CONFLICT);
+    // eslint-disable-next-line no-param-reassign
     createUserDto.password = bcrypt.hashSync(createUserDto.password, 7);
     const idObj = await this.userRepository
       .createQueryBuilder('user')
@@ -67,6 +72,7 @@ export class UserService {
     const candidate = await this.userRepository.findOne(id);
     if (!candidate) throw new HttpException('Nani', HttpStatus.NOT_FOUND);
     if (updateUserDto.password) {
+      // eslint-disable-next-line no-param-reassign
       updateUserDto.password = bcrypt.hashSync(updateUserDto.password, 7);
     }
     await this.userRepository.update(id, updateUserDto);

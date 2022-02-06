@@ -1,12 +1,12 @@
+/* eslint-disable no-empty-function */
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-useless-constructor */
 import {
-  HttpCode,
   HttpException,
   HttpStatus,
   Injectable,
 } from '@nestjs/common';
-import { HttpErrorByCode } from '@nestjs/common/utils/http-error-by-code.util';
 import { InjectRepository } from '@nestjs/typeorm';
-import { timingSafeEqual } from 'crypto';
 import { Repository } from 'typeorm';
 import Board from './board.entity';
 import { CreateBoardDto } from './dto/create-board.dto';
@@ -18,6 +18,7 @@ export class BoardService {
     @InjectRepository(Board)
     private readonly boardRepository: Repository<Board>,
   ) {}
+
   async create(createBoardDto: CreateBoardDto) {
     const idObj = await this.boardRepository
       .createQueryBuilder('board')

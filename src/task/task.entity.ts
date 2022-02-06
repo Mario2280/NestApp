@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import User from '../user/user.entity';
 import Board from '../board/board.entity';
-//import ColumnEntity from './Column';
+// import ColumnEntity from './Column';
 
 @Entity()
 export default class Task {

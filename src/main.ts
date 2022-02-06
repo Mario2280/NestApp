@@ -7,7 +7,7 @@ config();
 async function start() {
   const PORT = process.env.PORT || 3000;
   const app = await NestFactory.create(AppModule);
-  app.listen(PORT, () => console.log(`${PORT}`));
+  app.listen(PORT);
 }
 
 start();

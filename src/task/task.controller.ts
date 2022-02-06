@@ -1,3 +1,6 @@
+/* eslint-disable no-empty-function */
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-useless-constructor */
 import {
   Controller,
   Get,
@@ -12,13 +15,13 @@ import {
   HttpStatus,
   UseGuards,
 } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { TaskService } from './task.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { ValidationPipe } from '../validation.pipe';
-import { InjectRepository } from '@nestjs/typeorm';
 import Board from '../board/board.entity';
-import { Repository } from 'typeorm';
 import { JwtAuthGuard } from '../auth/jwt.auth-guard';
 
 @Controller('boards/:boardId/tasks')
@@ -28,6 +31,7 @@ export class TaskController {
     @InjectRepository(Board)
     private readonly boardRepository: Repository<Board>,
   ) {}
+
   @UseGuards(JwtAuthGuard)
   @Post()
   async create(
@@ -40,6 +44,7 @@ export class TaskController {
     const result = await this.taskService.create(createTaskDto);
     return result;
   }
+
   @UseGuards(JwtAuthGuard)
   @Get()
   @Header('Content-Type', 'application/json')
@@ -49,8 +54,10 @@ export class TaskController {
     const candidate = await this.boardRepository.findOne(boardId);
     if (!candidate)
       throw new HttpException('Board doesnt exist', HttpStatus.NOT_FOUND);
-    return await this.taskService.findAll();
+      const result = await this.taskService.findAll();
+    return result;
   }
+
   @UseGuards(JwtAuthGuard)
   @Get(':id')
   @Header('Content-Type', 'application/json')
@@ -61,8 +68,10 @@ export class TaskController {
     const candidate = await this.boardRepository.findOne(boardId);
     if (!candidate)
       throw new HttpException('Board doesnt exist', HttpStatus.NOT_FOUND);
-    return await this.taskService.findOne(id);
+      const result = await this.taskService.findOne(id);
+    return result;
   }
+
   @UseGuards(JwtAuthGuard)
   @Put(':id')
   async update(
@@ -73,8 +82,10 @@ export class TaskController {
     const candidate = await this.boardRepository.findOne(boardId);
     if (!candidate)
       throw new HttpException('Board doesnt exist', HttpStatus.NOT_FOUND);
-    return await this.taskService.update(id, updateTaskDto);
+      const result = await this.taskService.update(id, updateTaskDto);
+    return result;
   }
+
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async remove(
@@ -84,6 +95,7 @@ export class TaskController {
     const candidate = await this.boardRepository.findOne(boardId);
     if (!candidate)
       throw new HttpException('Board doesnt exist', HttpStatus.NOT_FOUND);
-    return await this.taskService.remove(id);
+      const result = await this.taskService.remove(id);
+    return result;
   }
 }
